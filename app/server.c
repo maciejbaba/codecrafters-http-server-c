@@ -59,8 +59,6 @@ int main()
   printf("Waiting for a client to connect...\n");
   client_addr_len = sizeof(client_addr);
 
-  accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
-
   client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
 
   if (client_fd == -1)
@@ -73,8 +71,10 @@ int main()
 
   char *resp = "HTTP/1.1 200 OK\r\n\r\n";
 
-  while (1) {
-    if (read(client_fd, NULL, 512) < 1) {
+  while (1)
+  {
+    if (read(client_fd, NULL, 512) < 1)
+    {
       break;
     }
   }
