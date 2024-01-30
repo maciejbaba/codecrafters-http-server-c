@@ -71,7 +71,10 @@ int main()
 
   char *resp = "HTTP/1.1 200 OK\r\n\r\n";
 
-  write(client_fd, resp, strlen(resp));
+  
+
+  send(client_fd, resp, strlen(resp));
+
   printf("Client connected\n");
 
   close(server_fd);
