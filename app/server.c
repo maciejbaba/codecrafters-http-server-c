@@ -18,7 +18,7 @@ int main()
   // Uncomment this block to pass the first stage
 
   int server_fd,
-      client_addr_len;
+      client_addr_len, client_fd;
   struct sockaddr_in client_addr;
 
   server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -60,6 +60,18 @@ int main()
   client_addr_len = sizeof(client_addr);
 
   accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
+
+  client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
+
+  if (client_fd == -1)
+  {
+    printf("Accept failed: %s \n", strerror(errno));
+    return 1;
+  }
+
+  char *resp = "HTTP/1.1 200 OK\r\n\r\n";
+
+  write(client_fd, resp, strlen(resp));
   printf("Client connected\n");
 
   close(server_fd);
