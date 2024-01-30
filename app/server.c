@@ -69,13 +69,17 @@ int main()
     return 1;
   }
 
+  printf("Client connected! Sending response...\n");
+
   char *resp = "HTTP/1.1 200 OK\r\n\r\n";
 
-  
+  while (1) {
+    if (read(client_fd, NULL, 512) < 1) {
+      break;
+    }
+  }
 
-  send(client_fd, resp, strlen(resp));
-
-  printf("Client connected\n");
+  write(client_fd, resp, strlen(resp));
 
   close(server_fd);
 
