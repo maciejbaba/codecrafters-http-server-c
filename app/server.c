@@ -68,21 +68,32 @@ int main()
   printf("Splitting the request into tokens...\n");
 
   char *token = strtok(buffer, " ");
+  int i = 0;
+  char *resp;
+
+  char *succ_resp = "HTTP/1.1 200 OK\r\n\r\n";
+  char *fail_resp = "HTTP/1.1 404 Not Found\r\n\r\n";
+
+
+  // GET / HTTP/1.1
 
   while (token != NULL)
   {
+    if (i == 1)
+    {
+      if (strcmp(token, "/") == 0)
+      {
+        resp = succ_resp;
+      }
+      else
+      {
+        resp = fail_resp;
+      }
+    }
+
     printf("Token: %s\n", token);
     token = strtok(NULL, " ");
-  }
-
-  char *resp = "HTTP/1.1 200 OK\r\n\r\n";
-
-  while (1)
-  {
-    if (read(client_fd, NULL, 512) < 1)
-    {
-      break;
-    }
+    i++;
   }
 
   write(client_fd, resp, strlen(resp));
