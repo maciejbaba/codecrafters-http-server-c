@@ -59,9 +59,21 @@ int main()
   printf("Waiting for a client to connect...\n");
   client_addr_len = sizeof(client_addr);
 
-  accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
+  client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
 
-  printf("Client connected! Sending response...\n");
+  char buffer[512] = {0};
+  recv(client_fd, buffer, 512, 0);
+
+  printf("Received: %s\n", buffer);
+  printf("Splitting the request into tokens...\n");
+
+  char *token = strtok(buffer, " ");
+
+  while (token != NULL)
+  {
+    printf("Token: %s\n", token);
+    token = strtok(NULL, " ");
+  }
 
   char *resp = "HTTP/1.1 200 OK\r\n\r\n";
 
